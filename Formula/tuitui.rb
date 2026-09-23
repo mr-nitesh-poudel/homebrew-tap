@@ -12,19 +12,17 @@ class Tuitui < Formula
       sha256 "08b599edfa591d009bc332be1954a97487390ca090d9cf0522abb86eac0b7beb"
     end
   end
-  if OS.linux?
-    if Hardware::CPU.intel?
-      url "https://github.com/mr-nitesh-poudel/tui-tui/releases/download/v0.1.1/tui-tui-x86_64-unknown-linux-gnu.tar.xz"
-      sha256 "1b82d020a45019e18957898ab7bb45398ee1f05baf7996439120b7787c4dde71"
-    end
+  if OS.linux? && Hardware::CPU.intel?
+    url "https://github.com/mr-nitesh-poudel/tui-tui/releases/download/v0.1.1/tui-tui-x86_64-unknown-linux-gnu.tar.xz"
+    sha256 "1b82d020a45019e18957898ab7bb45398ee1f05baf7996439120b7787c4dde71"
   end
   license any_of: ["MIT", "Apache-2.0"]
 
   BINARY_ALIASES = {
-    "aarch64-apple-darwin": {},
-    "x86_64-apple-darwin": {},
-    "x86_64-unknown-linux-gnu": {}
-  }
+    "aarch64-apple-darwin":     {},
+    "x86_64-apple-darwin":      {},
+    "x86_64-unknown-linux-gnu": {},
+  }.freeze
 
   def target_triple
     cpu = Hardware::CPU.arm? ? "aarch64" : "x86_64"
