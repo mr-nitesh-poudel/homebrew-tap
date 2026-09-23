@@ -1,20 +1,65 @@
 class Tuitui < Formula
   desc "Terminal games for two, played over a direct peer-to-peer connection"
   homepage "https://github.com/mr-nitesh-poudel/tui-tui"
-  url "https://github.com/mr-nitesh-poudel/tui-tui/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "ade0ab4240c529bba357a6b90e4a1a3be23f434562963410bf485a341878e4ea"
+  version "0.1.1"
+  if OS.mac?
+    if Hardware::CPU.arm?
+      url "https://github.com/mr-nitesh-poudel/tui-tui/releases/download/v0.1.1/tui-tui-aarch64-apple-darwin.tar.xz"
+      sha256 "98b0042f8805ec163e7553fc335c2fc9e477c2d8a6fc99795651985a80737996"
+    end
+    if Hardware::CPU.intel?
+      url "https://github.com/mr-nitesh-poudel/tui-tui/releases/download/v0.1.1/tui-tui-x86_64-apple-darwin.tar.xz"
+      sha256 "08b599edfa591d009bc332be1954a97487390ca090d9cf0522abb86eac0b7beb"
+    end
+  end
+  if OS.linux?
+    if Hardware::CPU.intel?
+      url "https://github.com/mr-nitesh-poudel/tui-tui/releases/download/v0.1.1/tui-tui-x86_64-unknown-linux-gnu.tar.xz"
+      sha256 "1b82d020a45019e18957898ab7bb45398ee1f05baf7996439120b7787c4dde71"
+    end
+  end
   license any_of: ["MIT", "Apache-2.0"]
-  head "https://github.com/mr-nitesh-poudel/tui-tui.git", branch: "main"
 
-  depends_on "rust" => :build
+  BINARY_ALIASES = {
+    "aarch64-apple-darwin": {},
+    "x86_64-apple-darwin": {},
+    "x86_64-unknown-linux-gnu": {}
+  }
 
-  def install
-    system "cargo", "install", *std_cargo_args
+  def target_triple
+    cpu = Hardware::CPU.arm? ? "aarch64" : "x86_64"
+    os = OS.mac? ? "apple-darwin" : "unknown-linux-gnu"
+
+    "#{cpu}-#{os}"
   end
 
-  test do
-    assert_match "tuitui #{version}", shell_output("#{bin}/tuitui --version")
-    # Nothing to play against in a test, but the argument parsing is real.
-    assert_match "no game called", shell_output("#{bin}/tuitui local draughts 2>&1", 2)
+  def install_binary_aliases!
+    BINARY_ALIASES[target_triple.to_sym].each do |source, dests|
+      dests.each do |dest|
+        bin.install_symlink bin/source.to_s => dest
+      end
+    end
+  end
+
+  def install
+    if OS.mac? && Hardware::CPU.arm?
+      bin.install "tuitui"
+    end
+    if OS.mac? && Hardware::CPU.intel?
+      bin.install "tuitui"
+    end
+    if OS.linux? && Hardware::CPU.intel?
+      bin.install "tuitui"
+    end
+
+    install_binary_aliases!
+
+    # Homebrew will automatically install these, so we don't need to do that
+    doc_files = Dir["README.*", "readme.*", "LICENSE", "LICENSE.*", "CHANGELOG.*"]
+    leftover_contents = Dir["*"] - doc_files
+
+    # Install any leftover files in pkgshare; these are probably config or
+    # sample files.
+    pkgshare.install(*leftover_contents) unless leftover_contents.empty?
   end
 end
