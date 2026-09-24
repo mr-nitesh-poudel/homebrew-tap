@@ -1,20 +1,20 @@
 class Tuitui < Formula
   desc "Terminal games for two, played over a direct peer-to-peer connection"
   homepage "https://github.com/mr-nitesh-poudel/tui-tui"
-  version "0.1.2"
+  version "0.2.0"
   if OS.mac?
     if Hardware::CPU.arm?
-      url "https://github.com/mr-nitesh-poudel/tui-tui/releases/download/v0.1.2/tui-tui-aarch64-apple-darwin.tar.xz"
-      sha256 "301df03ad4d912dd4fdd72b0d663d0e4e7b5d19274f3ac300f5805751ea20db8"
+      url "https://github.com/mr-nitesh-poudel/tui-tui/releases/download/v0.2.0/tui-tui-aarch64-apple-darwin.tar.xz"
+      sha256 "f3cd426ab9272aa6b64a8f35604b54c635f2ae1152eefbbd39d5c405223db2d7"
     end
     if Hardware::CPU.intel?
-      url "https://github.com/mr-nitesh-poudel/tui-tui/releases/download/v0.1.2/tui-tui-x86_64-apple-darwin.tar.xz"
-      sha256 "a7ba9e7ede6c053713faf8cefe78175340968214fedfa11576aa868cb6315aeb"
+      url "https://github.com/mr-nitesh-poudel/tui-tui/releases/download/v0.2.0/tui-tui-x86_64-apple-darwin.tar.xz"
+      sha256 "0e3d8236da07f00afcc8fe6eaa512140578c55ca2fc0bfef96bb3b9393de512b"
     end
   end
   if OS.linux? && Hardware::CPU.intel?
-    url "https://github.com/mr-nitesh-poudel/tui-tui/releases/download/v0.1.2/tui-tui-x86_64-unknown-linux-gnu.tar.xz"
-    sha256 "2091b96a71d2e0a91d41f19e02a582fbbd225e41b79b664fbfeab464944101f0"
+    url "https://github.com/mr-nitesh-poudel/tui-tui/releases/download/v0.2.0/tui-tui-x86_64-unknown-linux-gnu.tar.xz"
+    sha256 "3b3b533d1c31af5d6a0eb8dba87bc12c5b36094c943c69a8362148adbab217c6"
   end
   license any_of: ["MIT", "Apache-2.0"]
 
